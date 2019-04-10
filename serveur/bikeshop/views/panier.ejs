@@ -40,25 +40,34 @@
     <% var totalCmd = 0;
     for(var i = 0; i < dataCardBike.length; i++ ) {%>
       <div class="row card-product">
-        <div class="col-5 col-sm-3"><img class="bike-picture" src="<%= dataCardBike[i].bikeImage %>"></div>
+        <div class="col-5 col-sm-3"><img class="bike-picture" src="<%= dataCardBike[i].bikeImageFromFront %>"></div>
         <div class="col-4 d-none d-sm-block">
-          <p><%= dataCardBike[i].bikeName %></p>
+          <p><%= dataCardBike[i].bikeNameFromFront %></p>
         </div>
         <div class="col-3 col-sm-2">
           <div class="row">
-            <div class="col-8">
-              <input type="text" value="<%= dataCardBike[i].quantity %>" class="form-control form-control-sm" id='quantityField'>
-            </div>
+            <form action="/update-shop" method="POST">
+              <div class="col-8">
+                  <input type="text" name='quantity' value="<%= dataCardBike[i].bikeQuantityFromFront %>" class="form-control form-control-sm" id='quantityField'>
+              </div>
             <div class="col-4">
-              <button type="button" class="btn btn-outline-info btn-sm" name="button"><i class="fa fa-refresh" aria-hidden="true" id='refresh'></i></button>
+              <input type="hidden" name="position" value="<%= i %>">
+              <button type="submit" name="Update" value="" class="btn btn-outline-info btn-sm" id='refresh'><i class="fa fa-refresh" aria-hidden="true"></i></button>
             </div>
+          </form>
           </div>
         </div>
-        <div class="col-2 col-sm-1"><%= dataCardBike[i].bikePrice %>€</div>
-        <div class="col-1 d-none d-sm-block"><%= dataCardBike[i].bikePrice * dataCardBike[i].quantity %> €</div>
-        <div class="col-2 col-sm-1"><button type="button" class="btn btn-outline-info btn-sm" name="button" id='trash' onclick=trash()><i class="fa fa-trash-o" aria-hidden="true"></i></button></div>
+        <div class="col-2 col-sm-1"><%= dataCardBike[i].bikePriceFromFront %>€</div>
+        <div class="col-1 d-none d-sm-block"><%= dataCardBike[i].bikePriceFromFront * dataCardBike[i].bikeQuantityFromFront %> €</div>
+        <div class="col-2 col-sm-1">
+          <form action="/delete-shop" method="POST">
+            <input type="hidden" name="position" value="<%= i %>">
+            <button type="submit" name="Delete" value="" class="btn btn-outline-info btn-sm" aria-hidden="true" id='trash'><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+          </form>
+          <!-- <a href="/delete-shop?position=<%= i %>"><button type="button" class="btn btn-outline-info btn-sm" name="button" id='trash'><i class="fa fa-trash-o" aria-hidden="true"></i></button></a> -->
+        </div>
       </div>
-    <% totalCmd += (dataCardBike[i].bikePrice * dataCardBike[i].quantity) %>
+    <% totalCmd += (dataCardBike[i].bikePriceFromFront * dataCardBike[i].bikeQuantityFromFront) %>
     <% } %>
       <div class="row" id="card-total">
         <div class="col-8 col-sm-10 text-right">Total basket: </div>

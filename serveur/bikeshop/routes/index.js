@@ -12,27 +12,33 @@ router.get('/', function(req, res, next) {
 var dataBike = [{
       bikeName: 'BIKO65',
       bikeImage: '/images/bike-1.jpg',
-      bikePrice: 679
+      bikePrice: 679,
+      quantity: 1
     },{
       bikeName: 'ZOOK7',
       bikeImage: '/images/bike-2.jpg',
-      bikePrice: 799
+      bikePrice: 799,
+      quantity: 1
     },{
       bikeName: 'LIKO89',
       bikeImage: '/images/bike-3.jpg',
-      bikePrice: 839
+      bikePrice: 839,
+      quantity: 1
     },{
       bikeName: 'GEWO',
       bikeImage: '/images/bike-4.jpg',
-      bikePrice: 1206
+      bikePrice: 1206,
+      quantity: 1
     },{
       bikeName: 'TITAN5',
       bikeImage: '/images/bike-5.jpg',
-      bikePrice: 989
+      bikePrice: 989,
+      quantity: 1
     },{
       bikeName: 'AMIG39',
       bikeImage: '/images/bike-6.jpg',
-      bikePrice: 599
+      bikePrice: 599,
+      quantity: 1
     }]
 
 router.get('/shop', function(req, res, next) {
@@ -42,35 +48,51 @@ router.get('/shop', function(req, res, next) {
    });
 });
 
-var dataCardBike = [{
-      bikeName: 'BIKO65',
-      bikeImage: '/images/bike-1.jpg',
-      bikePrice: 678,
-      quantity: 2
-    },{
-      bikeName: 'ZOOK87',
-      bikeImage: '/images/bike-2.jpg',
-      bikePrice: 799,
-      quantity: 1
-    },{
-      bikeName: 'LIKO89',
-      bikeImage: '/images/bike-3.jpg',
-      bikePrice: 839,
-      quantity: 4
-    },{
-      bikeName: 'AMIG39',
-      bikeImage: '/images/bike-6.jpg',
-      bikePrice: 839,
-      quantity: 2
-    }]
+var dataCardBike = []
 
-router.get('/basket',
-    function(req, res, next) {
-      res.render('panier', {
-        title: 'BikeShop - Panier',
-        dataCardBike: dataCardBike,
-       });
-    }
-);
+router.post('/addToCart', function(req, res, next) {
+//  console.log(req.body);
+//   if (dataCardBike.length == 0) {
+//     dataCardBike.push(req.body);
+//     // console.log(dataCardBike)
+//     console.log('yo length = 0')
+//     console.log(dataCardBike)
+//   } else {
+//     for(var i = 0; i < dataCardBike.length; i++ ) {
+//     if (req.body.bikeNameFromFront == dataCardBike[i].bikeNameFromFront) {
+//       dataCardBike[i].bikeQuantityFromFront++
+//       console.log('yo doublon + 1')
+//       console.log(dataCardBike)
+//     } else {
+//       dataCardBike.push(req.body)
+//       console.log('yo pas de doublon, ajout ligne')
+//       console.log(dataCardBike)
+//     }
+//   }
+// }
+  dataCardBike.push(req.body);
+  console.log(dataCardBike);
+  res.render('panier', {
+    title: 'BikeShop - Panier',
+    dataCardBike
+ });
+});
+
+router.post('/delete-shop', function(req, res, next) {
+  dataCardBike.splice(req.body.position, 1);
+  res.render('panier', {
+    title: 'BikeShop - Panier',
+    dataCardBike
+   });
+});
+
+router.post('/update-shop', function(req, res, next) {
+  dataCardBike[req.body.position].bikeQuantityFromFront = req.body.quantity
+  res.render('panier', {
+    title: 'BikeShop - Panier',
+    dataCardBike
+   });
+});
+
 
 module.exports = router;

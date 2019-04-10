@@ -34,7 +34,15 @@
           <div class="card-body">
             <h5 class="card-title">Model <%= dataBike[i].bikeName %></h5>
             <span class="shop-price"><%= dataBike[i].bikePrice %> €</span>
-            <a href="/basket" class="btn btn-outline-info btn-sm">Buy</a>
+            <form action="/addToCart" method="POST">
+              <input type="hidden" name="position" value="<%= i %>">
+              <input type="hidden" name="bikeNameFromFront" value="<%= dataBike[i].bikeName %>">
+              <input type="hidden" name="bikeImageFromFront" value="<%= dataBike[i].bikeImage %>">
+              <input type="hidden" name="bikePriceFromFront" value="<%= dataBike[i].bikePrice %>">
+              <input type="hidden" name="bikeQuantityFromFront" value="<%= dataBike[i].quantity %>">
+              <input type="submit" name="Buy" value="Buy" class="btn btn-outline-info btn-sm">
+            </form>
+            <!-- <a href="/basket?bikeName=<%= dataBike[i].bikeName %>&bikeImage=<%= dataBike[i].bikeImage %>&bikePrice=<%= dataBike[i].bikePrice %>&quantity=<%= dataBike[i].quantity %>" class="btn btn-outline-info btn-sm">Buy</a> -->
           </div>
         </div>
       </div>
