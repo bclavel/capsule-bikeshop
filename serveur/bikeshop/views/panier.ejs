@@ -76,6 +76,19 @@
       <div class="row" id="card-checkout">
         <div class="col-12 text-right"><button type="button" class="btn btn-outline-info btn-sm" name="button">Checkout</button></div>
       </div>
+      <form action="/checkout" method="POST">
+        <script
+          src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key="pk_test_DkrtnQDGKZLNcgrAZcvkj2ys00UZBdF0PJ"
+          data-amount="<%= totalCmd * 100 %>"
+          data-name="BikeShop"
+          data-description="Paie ton vélo"
+          data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+          data-locale="auto"
+          data-currency="eur">
+        </script>
+        <input type="hidden" name="amount" value="<%= totalCmd * 100 %>">
+      </form>
     </div>
   <script type="text/javascript" src="/javascripts/script.js">
 </script>

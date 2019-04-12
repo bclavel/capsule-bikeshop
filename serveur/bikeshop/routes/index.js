@@ -1,6 +1,19 @@
 var express = require('express');
 var router = express.Router();
 
+// Set your secret key: remember to change this to your live secret key in production
+// See your keys here: https://dashboard.stripe.com/account/apikeys
+var stripe = require("stripe")("sk_test_xb4VL0s8UXikXJvsBjQddFuU00mpWe9WPB");
+
+(async () => {
+  const charge = await stripe.charges.create({
+    amount: 999,
+    currency: 'usd',
+    source: 'tok_visa',
+    receipt_email: 'jenny.rosen@example.com',
+  });
+})();
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', {
@@ -82,6 +95,31 @@ router.post('/update-shop', function(req, res, next) {
     title: 'BikeShop - Panier',
     sessionCart: req.session.sessionCart,
    });
+});
+
+
+router.post('/checkout', function(req, res, next) {
+
+  console.log(req.body);
+  const token = req.body.stripeToken;
+
+  var listeBikes = [];
+  for (var i = 0; i < req.session.sessionCart.length; i++) {
+    listeBikes.push(req.session.sessionCart[i].bikeName);
+  }
+
+  const charge = stripe.charges.create({
+    amount: req.body.amount,
+    currency: 'eur',
+    source: token,
+    receipt_email: 'jenny.rosen@example.com',
+    description: `Jon Doe, 11 allée des peupliers Lyon, Ref: ${listeBikes}`
+  });
+
+  res.render('shop', {
+    title: 'Accueil',
+    dataBike
+ });
 });
 
 
