@@ -5,24 +5,8 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1>Mes <%= title %></h1>
-    <p>Liste de mes produits :</p>
-    <%
-      if(products.length == 0) {
-      %>
-        <h2>Aucun article disponible</h2>
-      <%
-      }
-    %>
-    <ul>
-    <%
-    for(var i=0; i<products.length; i++) {
-    %>
-        <li><%= products[i] %></li>
-    <%
-    }
-    %>
-    </ul>
+    <h1><%= title %></h1>
+    <p><a href="/shop">Accueil du Shop de vélos</a>
   </body>
 </html>
 

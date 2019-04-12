@@ -4,8 +4,7 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', {
-    title: 'Express Yo!',
-    subtitle: 'Ouesch gro!'
+    title: 'Accueil',
  });
 });
 
@@ -42,55 +41,46 @@ var dataBike = [{
     }]
 
 router.get('/shop', function(req, res, next) {
+  if ( req.session.sessionCart == undefined ) {
+    req.session.sessionCart = [];
+    console.log('sessionCart is undefined')
+  }
   res.render('shop', {
     title: 'BikeShop - Accueil',
-    dataBike: dataBike,
+    dataBike,
    });
 });
 
-var dataCardBike = []
-
 router.post('/addToCart', function(req, res, next) {
-//  console.log(req.body);
-//   if (dataCardBike.length == 0) {
-//     dataCardBike.push(req.body);
-//     // console.log(dataCardBike)
-//     console.log('yo length = 0')
-//     console.log(dataCardBike)
-//   } else {
-//     for(var i = 0; i < dataCardBike.length; i++ ) {
-//     if (req.body.bikeNameFromFront == dataCardBike[i].bikeNameFromFront) {
-//       dataCardBike[i].bikeQuantityFromFront++
-//       console.log('yo doublon + 1')
-//       console.log(dataCardBike)
-//     } else {
-//       dataCardBike.push(req.body)
-//       console.log('yo pas de doublon, ajout ligne')
-//       console.log(dataCardBike)
-//     }
-//   }
-// }
-  dataCardBike.push(req.body);
-  console.log(dataCardBike);
+
+  req.session.sessionCart.push(
+    {
+      bikeName: req.body.bikeNameFromFront,
+      bikePrice: req.body.bikePriceFromFront,
+      bikeImage: req.body.bikeImageFromFront,
+      bikeQuantity: req.body.bikeQuantityFromFront
+    }
+  );
   res.render('panier', {
     title: 'BikeShop - Panier',
-    dataCardBike
+    sessionCart: req.session.sessionCart,
  });
 });
 
 router.post('/delete-shop', function(req, res, next) {
-  dataCardBike.splice(req.body.position, 1);
+  req.session.sessionCart.splice(req.body.position, 1);
   res.render('panier', {
     title: 'BikeShop - Panier',
-    dataCardBike
+    sessionCart: req.session.sessionCart,
    });
 });
 
 router.post('/update-shop', function(req, res, next) {
-  dataCardBike[req.body.position].bikeQuantityFromFront = req.body.quantity
+  req.session.sessionCart[req.body.position].bikeQuantity = req.body.quantity;
+
   res.render('panier', {
     title: 'BikeShop - Panier',
-    dataCardBike
+    sessionCart: req.session.sessionCart,
    });
 });
 
